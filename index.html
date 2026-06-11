@@ -5,10 +5,51 @@
     <title>Crayfish Dashboard</title>
 
     <link rel="stylesheet" href="style.css">
-
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBob43ZxNmd7TF8w88m1igpp_kmd3K4Hwo",
+    authDomain: "crayfishmonitoring-30010.firebaseapp.com",
+    projectId: "crayfishmonitoring-30010",
+    storageBucket: "crayfishmonitoring-30010.firebasestorage.app",
+    messagingSenderId: "974642532197",
+    appId: "1:974642532197:web:77e52d4505e45275381b8c"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const docRef = db.collection("sensorData").doc("latest");
+
+  function updateUI(data) {
+    document.getElementById("temp").innerText = data.temperature + " °C";
+    document.getElementById("food").innerText = data.foodLevel + " %";
+    document.getElementById("feedTime").innerText = data.lastFeeding;
+  }
+
+  // REAL-TIME LISTENER
+  docRef.onSnapshot((doc) => {
+    if (doc.exists) {
+      updateUI(doc.data());
+    }
+  });
+</script>
+    <script>
+  db.collection("sensorHistory").orderBy("date").limit(10)
+    .onSnapshot((snapshot) => {
+      let labels = [];
+      let tempData = [];
+
+      snapshot.forEach((doc) => {
+        labels.push(doc.id);
+        tempData.push(doc.data().temperature);
+      });
+
+      console.log(labels, tempData);
+    });
+</script>
 </head>
 
 <body>
@@ -47,6 +88,10 @@
 </div>
 
 <script src="script.js"></script>
+
+    <h2>Temperature: <span id="temp">--</span></h2>
+<h2>Food Level: <span id="food">--</span></h2>
+<h2>Last Feeding: <span id="feedTime">--</span></h2>
 
 </body>
 </html>
