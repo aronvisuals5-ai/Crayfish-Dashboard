@@ -96,15 +96,3 @@ db.ref("Sensor-temperature-data")
     tempChart.update();
     foodChart.update();
 });
-
-    /* UPDATE UI ONLY ONCE */
-    if (lastData) {
-        document.getElementById("temp").innerHTML = lastData.raw_temp_c + " °C";
-        document.getElementById("food").innerHTML = lastData.timestamp.value + "%";
-        document.getElementById("status").innerHTML = "OK";
-    }
-
-    tempChart.update();
-    foodChart.update();
-
-});
