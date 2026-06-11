@@ -1,14 +1,4 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyBob43ZxNmd7TF8w88m1igpp_kmd3K4Hwo",
-    authDomain: "crayfishmonitoring-30010.firebaseapp.com",
-    databaseURL: "https://crayfishmonitoring-30010-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "crayfishmonitoring-30010",
-    storageBucket: "crayfishmonitoring-30010.firebasestorage.app",
-    messagingSenderId: "974642532197",
-    appId: "1:974642532197:web:77e52d4505e45275381b8c"
-};
-
-firebase.initializeApp(firebaseConfig);
+// ❌ DO NOT put firebaseConfig here anymore
 
 const db = firebase.database();
 
@@ -69,7 +59,6 @@ db.ref("Sensor-temperature-data")
 .on("value", (snapshot) => {
 
     let d = snapshot.val();
-
     if (!d) return;
 
     let temp = d.raw_temp_c;
