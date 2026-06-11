@@ -2,7 +2,10 @@ const firebaseConfig = {
     apiKey: "AIzaSyBob43ZxNmd7TF8w88m1igpp_kmd3K4Hwo",
     authDomain: "crayfishmonitoring-30010.firebaseapp.com",
     databaseURL: "https://crayfishmonitoring-30010-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "crayfishmonitoring-30010"
+    projectId: "crayfishmonitoring-30010",
+    storageBucket: "crayfishmonitoring-30010.firebasestorage.app",
+    messagingSenderId: "974642532197",
+    appId: "1:974642532197:web:77e52d4505e45275381b8c"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -74,23 +77,32 @@ db.ref("iot")
     let lastData = null;
 
     snapshot.forEach((child) => {
+
         let d = child.val();
         lastData = d;
 
-        let date = new Date(d.timestamp * 1000);
+        /* FIXED FOR YOUR REAL DATA STRUCTURE */
+        let temp = d.raw_temp_c ?? 0;
+        let food = d.timestamp?.value ?? 0;
+        let time = d.timestamp?.ph_time;
 
-        labels.push(date.toLocaleString());
-        tempData.push(d.temperature);
-        foodData.push(d.food_level);
+        if (time) {
+            let date = new Date(time);
+            labels.push(date.toLocaleString());
+        }
+
+        tempData.push(temp);
+        foodData.push(food);
     });
 
-    /* UPDATE UI ONLY ONCE (FIXED) */
+    /* UPDATE UI ONLY ONCE */
     if (lastData) {
-        document.getElementById("temp").innerHTML = lastData.temperature + " °C";
-        document.getElementById("food").innerHTML = lastData.food_level + "%";
-        document.getElementById("status").innerHTML = lastData.status;
+        document.getElementById("temp").innerHTML = lastData.raw_temp_c + " °C";
+        document.getElementById("food").innerHTML = lastData.timestamp.value + "%";
+        document.getElementById("status").innerHTML = "OK";
     }
 
     tempChart.update();
     foodChart.update();
+
 });
