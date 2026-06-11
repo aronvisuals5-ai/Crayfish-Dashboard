@@ -1,5 +1,3 @@
-const db = firebase.database();
-
 let labels = [];
 let tempData = [];
 let foodData = [];
