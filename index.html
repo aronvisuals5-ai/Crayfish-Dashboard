@@ -6,19 +6,18 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Firebase (ONLY ONE VERSION) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- FIREBASE + REALTIME DATABASE -->
+    <!-- Firebase Init (ONLY ONCE) -->
     <script>
       const firebaseConfig = {
         apiKey: "AIzaSyBob43ZxNmd7TF8w88m1igpp_kmd3K4Hwo",
         authDomain: "crayfishmonitoring-30010.firebaseapp.com",
-        databaseURL: "https://crayfishmonitoring-30010-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "crayfishmonitoring-30010",
         storageBucket: "crayfishmonitoring-30010.firebasestorage.app",
         messagingSenderId: "974642532197",
@@ -26,10 +25,9 @@
       };
 
       firebase.initializeApp(firebaseConfig);
-      const db = firebase.database();
     </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -72,7 +70,7 @@
 <!-- LAST FEEDING INFO -->
 <h2>Last Feeding: <span id="feedTime">--</span></h2>
 
-<!-- SCRIPT FILE -->
+<!-- SCRIPT -->
 <script src="script.js"></script>
 
 </body>
