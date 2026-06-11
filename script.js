@@ -1,3 +1,4 @@
+
 let labels = [];
 let tempData = [];
 let foodData = [];
@@ -18,24 +19,39 @@ document.getElementById('tempChart'),
     },
     options: {
         responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-            y: { min: 0, max: 60, ticks: { stepSize: 10 } }
-        }
+        maintainAspectRatio: false
     }
 });
 
 /* ================= FOOD CHART ================= */
-const db = firebase.firestore();
+const foodChart = new Chart(
+document.getElementById('foodChart'),
+{
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Food Level (%)',
+            data: foodData,
+            borderWidth: 2,
+            fill: false
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
 
+/* ================= FIRESTORE ================= */
+const db = firebase.firestore();
 const collectionRef = db.collection("sensor-temperature-data");
 
 collectionRef.onSnapshot((snapshot) => {
 
-    let labels = [];
-    let tempData = [];
-    let foodData = [];
+    labels.length = 0;
+    tempData.length = 0;
+    foodData.length = 0;
 
     let lastDoc = null;
 
@@ -56,7 +72,6 @@ collectionRef.onSnapshot((snapshot) => {
         foodData.push(food);
     });
 
-    // update UI with latest record
     if (lastDoc) {
         document.getElementById("temp").innerHTML = lastDoc.raw_temp_c + " °C";
         document.getElementById("food").innerHTML = lastDoc.timestamp.value + "%";
