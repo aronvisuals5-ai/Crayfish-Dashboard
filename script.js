@@ -65,35 +65,37 @@ document.getElementById('foodChart'),
 });
 
 /* ================= REALTIME DATA ================= */
-db.ref("iot")
-.orderByChild("timestamp")
-.limitToLast(1440)
+db.ref("Sensor-temperature-data")
 .on("value", (snapshot) => {
 
+    let d = snapshot.val();
+
+    if (!d) return;
+
+    let temp = d.raw_temp_c;
+    let food = d.timestamp.value;
+    let time = d.timestamp.ph_time;
+
+    let date = new Date(time);
+
+    /* RESET ARRAYS */
     labels.length = 0;
     tempData.length = 0;
     foodData.length = 0;
 
-    let lastData = null;
+    /* PUSH SINGLE VALUE */
+    labels.push(date.toLocaleString());
+    tempData.push(temp);
+    foodData.push(food);
 
-    snapshot.forEach((child) => {
+    /* UPDATE UI */
+    document.getElementById("temp").innerHTML = temp + " °C";
+    document.getElementById("food").innerHTML = food + "%";
+    document.getElementById("status").innerHTML = "ONLINE";
 
-        let d = child.val();
-        lastData = d;
-
-        /* FIXED FOR YOUR REAL DATA STRUCTURE */
-        let temp = d.raw_temp_c ?? 0;
-        let food = d.timestamp?.value ?? 0;
-        let time = d.timestamp?.ph_time;
-
-        if (time) {
-            let date = new Date(time);
-            labels.push(date.toLocaleString());
-        }
-
-        tempData.push(temp);
-        foodData.push(food);
-    });
+    tempChart.update();
+    foodChart.update();
+});
 
     /* UPDATE UI ONLY ONCE */
     if (lastData) {
