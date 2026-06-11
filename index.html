@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Crayfish Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<header>
+    <h1>🦞 Crayfish Monitoring Dashboard</h1>
+</header>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>Water Temperature</h3>
+        <div class="value" id="temp">-- °C</div>
+    </div>
+
+    <div class="card">
+        <h3>Food Level</h3>
+        <div class="value" id="food">-- %</div>
+    </div>
+
+    <div class="card">
+        <h3>Status</h3>
+        <div class="value" id="status">--</div>
+    </div>
+
+</div>
+
+<div class="chart">
+    <h2>Water Temperature Trend</h2>
+    <canvas id="tempChart"></canvas>
+</div>
+
+<div class="chart">
+    <h2>Food Level Trend</h2>
+    <canvas id="foodChart"></canvas>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
