@@ -51,7 +51,7 @@ document.getElementById('foodChart'),
 });
 
 /* ================= REALTIME DATA ================= */
-db.ref("sensor-temperature-data-raw_temp_c").on("value", (snapshot) => {
+db.ref("sensor-temperature-data").on("value", (snapshot) => {
 
     console.log("Firebase data:", snapshot.val());
 
