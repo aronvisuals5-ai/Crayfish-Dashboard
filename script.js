@@ -51,39 +51,35 @@ document.getElementById('foodChart'),
 });
 
 /* ================= REALTIME DATA ================= */
-db.ref("Sensor-temperature-data").on("value", (snapshot) => {
+db.ref("sensor-temperature-data-raw_temp_c").on("value", (snapshot) => {
 
-    console.log("Firebase data:", snapshot.val()); // 🔥 DEBUG
+    console.log("Firebase data:", snapshot.val());
 
     let d = snapshot.val();
     if (!d) return;
 
-    let temp = d.raw_temp_c ?? 0;
-    let food = d.timestamp?.value ?? 0;
+    let temp = d.raw_temp_c;
+    let food = d.timestamp?.value;
     let time = d.timestamp?.ph_time;
-
-    if (!time) {
-        console.log("Missing timestamp!");
-        return;
-    }
 
     let date = new Date(time);
 
-    /* RESET ARRAYS */
+    // RESET
     labels.length = 0;
     tempData.length = 0;
     foodData.length = 0;
 
-    /* PUSH DATA */
+    // PUSH DATA
     labels.push(date.toLocaleString());
     tempData.push(temp);
     foodData.push(food);
 
-    /* UPDATE UI */
+    // UPDATE UI
     document.getElementById("temp").innerHTML = temp + " °C";
     document.getElementById("food").innerHTML = food + "%";
     document.getElementById("status").innerHTML = "ONLINE";
 
+    // UPDATE CHARTS
     tempChart.update();
     foodChart.update();
 });
