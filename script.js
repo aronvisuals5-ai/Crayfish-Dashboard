@@ -1,6 +1,6 @@
 const firebaseConfig = {
     databaseURL:
-    "https://YOUR_PROJECT-default-rtdb.firebaseio.com/"
+    "https://crayfishmonitoring-30010-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
 firebase.initializeApp(firebaseConfig);
