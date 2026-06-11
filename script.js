@@ -50,22 +50,27 @@ document.getElementById('foodChart'),
     }
 });
 
-/* ================= REALTIME DATA ================= */
-const db = firebase.firestore();
+/* ================= FIRESTORE ================= */
+firebase.initializeApp(firebaseConfig); // IMPORTANT: must exist in HTML
 
+const db = firebase.firestore();
 const docRef = db.collection("sensor-temperature-data").doc("latest");
 
 docRef.onSnapshot((doc) => {
 
-    console.log("Firestore data:", doc.data());
-
-    if (!doc.exists) return;
+    if (!doc.exists) {
+        console.log("No document found");
+        return;
+    }
 
     let d = doc.data();
+    console.log("Firestore data:", d);
 
-    let temp = d.raw_temp_c;
-    let food = d.timestamp.value;
-    let time = d.timestamp.ph_time;
+    let temp = d.raw_temp_c ?? 0;
+    let food = d.timestamp?.value ?? 0;
+    let time = d.timestamp?.ph_time;
+
+    if (!time) return;
 
     let date = new Date(time);
 
@@ -79,12 +84,12 @@ docRef.onSnapshot((doc) => {
     tempData.push(temp);
     foodData.push(food);
 
-    // update UI
+    // UI
     document.getElementById("temp").innerHTML = temp + " °C";
     document.getElementById("food").innerHTML = food + "%";
     document.getElementById("status").innerHTML = "ONLINE";
 
-    // update charts
+    // charts
     tempChart.update();
     foodChart.update();
 });
