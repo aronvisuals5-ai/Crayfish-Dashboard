@@ -1,5 +1,3 @@
-// ❌ DO NOT put firebaseConfig here anymore
-
 const db = firebase.database();
 
 let labels = [];
@@ -55,15 +53,21 @@ document.getElementById('foodChart'),
 });
 
 /* ================= REALTIME DATA ================= */
-db.ref("Sensor-temperature-data")
-.on("value", (snapshot) => {
+db.ref("Sensor-temperature-data").on("value", (snapshot) => {
+
+    console.log("Firebase data:", snapshot.val()); // 🔥 DEBUG
 
     let d = snapshot.val();
     if (!d) return;
 
-    let temp = d.raw_temp_c;
-    let food = d.timestamp.value;
-    let time = d.timestamp.ph_time;
+    let temp = d.raw_temp_c ?? 0;
+    let food = d.timestamp?.value ?? 0;
+    let time = d.timestamp?.ph_time;
+
+    if (!time) {
+        console.log("Missing timestamp!");
+        return;
+    }
 
     let date = new Date(time);
 
@@ -72,7 +76,7 @@ db.ref("Sensor-temperature-data")
     tempData.length = 0;
     foodData.length = 0;
 
-    /* PUSH SINGLE VALUE */
+    /* PUSH DATA */
     labels.push(date.toLocaleString());
     tempData.push(temp);
     foodData.push(food);
